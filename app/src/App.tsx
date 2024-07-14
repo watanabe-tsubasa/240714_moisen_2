@@ -1,4 +1,3 @@
-import './App.css'
 import { Avator } from './components/Avator'
 import { Calling } from './components/Calling'
 
