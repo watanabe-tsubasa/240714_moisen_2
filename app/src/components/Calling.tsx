@@ -1,7 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { X, PhoneCall } from 'lucide-react';
 
-export const Calling = () => {
+interface CallingProps {
+  onUnmount: () => void
+}
+
+export const Calling: React.FC<CallingProps> = ({ onUnmount }) => {
   const [dots, setDots] = useState([0, 1, 2]);
   const [isAnswering, setIsAnswering] = useState(false);
   const [isUnmounting, setIsUnmounting] = useState(false);
@@ -18,8 +22,11 @@ export const Calling = () => {
     setIsAnswering(true);
     setTimeout(() => {
       setIsUnmounting(true);
+      if (onUnmount) {
+        onUnmount();
+      }
     }, 500); // アニメーションが500msで終了するのを待つ
-  }, []);
+  }, [onUnmount]);
 
   if (isUnmounting) {
     return null; // コンポーネントをアンマウント

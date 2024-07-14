@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { FirstTalk } from './FirstTalk';
 
 export const Voice: React.FC = () => {
   const [text, setText] = useState<string>('');
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +25,6 @@ export const Voice: React.FC = () => {
       const audioBlob = await response.blob();
       const resUrl = URL.createObjectURL(audioBlob);
       
-      // 音声の自動再生
       if (audioRef.current) {
         audioRef.current.src = resUrl;
         audioRef.current.play();
@@ -48,6 +48,7 @@ export const Voice: React.FC = () => {
         </Button>
       </div>
       <audio ref={audioRef} onEnded={handleAudioEnded} />
+      <FirstTalk setIsPlaying={setIsPlaying} />
     </div>
   );
 };
