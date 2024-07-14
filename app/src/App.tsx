@@ -1,12 +1,14 @@
 import './App.css'
-import { Voice } from './components/Voice'
+import { Avator } from './components/Avator'
+import { Calling } from './components/Calling'
 
 function App() {
 
   return (
-    <>
-      <Voice />
-    </>
+    <div className='h-screen bg-slate-200'>
+      <Calling />
+      <Avator />
+    </div>
   )
 }
 
