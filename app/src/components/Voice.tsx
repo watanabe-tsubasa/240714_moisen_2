@@ -10,6 +10,7 @@ import { FirstTalk } from './FirstTalk';
 export const Voice: React.FC = () => {
   const [text, setText] = useState<string>('');
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [speechLog, setSpeechLog] = useState<string[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
   const {
@@ -38,6 +39,7 @@ export const Voice: React.FC = () => {
   }, [listening, transcript]);
 
   const playAudioFromText = async (text: string) => {
+    setIsFetching(true);
     try {
       const response = await fetch(`https://deprecatedapis.tts.quest/v2/voicevox/audio/?text=${text}&key=F9L529z2B342B-D&speaker=47`, {
         method: "GET",
@@ -57,6 +59,8 @@ export const Voice: React.FC = () => {
       }
     } catch (error) {
       console.error('Error fetching the audio:', error);
+    } finally {
+      setIsFetching(false);
     }
   };
 
@@ -76,6 +80,8 @@ export const Voice: React.FC = () => {
     setIsPlaying(false);
   };
 
+  const messageClass = "fixed left-0 w-full p-4 text-center text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 top-1/2";
+
   return (
     <div className='relative flex flex-col items-center justify-center w-full h-full p-4'>
       <div className='flex justify-center w-full'>
@@ -91,11 +97,18 @@ export const Voice: React.FC = () => {
       <audio ref={audioRef} onEnded={handleAudioEnded} />
       <FirstTalk setIsPlaying={setIsPlaying} />
       
-      {listening && (
-        <div className="fixed left-0 w-full p-4 text-center text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 top-1/2">
-          話しかけてください
+      {isFetching ? (
+        <div className={messageClass}>
+          考え中・・・
         </div>
+      ) : (
+        listening && (
+          <div className={messageClass}>
+            話しかけてください
+          </div>
+        )
       )}
+      <Button onClick={() => {SpeechRecognition.startListening()}}>再開</Button>
     </div>
   );
 };
