@@ -51,7 +51,7 @@ export const Voice: React.FC = () => {
       // playAudioFromText(transcript);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listening, transcript, conversationId]);
+  }, [listening, transcript]);
 
   const fetchAndTalk = async (text: string, userId: string, conversationId: string) => {
     setIsFetching(true);
